@@ -5,6 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PackageService {
@@ -37,5 +41,13 @@ public class PackageService {
         int discount = discountFor(pkg);
 
         return totalCost - (totalCost * discount / 100);
+    }
+
+    public List<Package> parsePackages(String packagesInput) {
+        String[] packagesInputArray = packagesInput.split("\n");
+
+        return Arrays.stream(packagesInputArray)
+                .map(this::parsePackage)
+                .collect(Collectors.toList());
     }
 }

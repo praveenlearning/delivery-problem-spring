@@ -5,6 +5,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -72,5 +76,21 @@ class PackageServiceTest {
 
         int totalCost = packageService.totalCost(pkg);
         assertEquals(990, totalCost);
+    }
+
+    @Test
+    void shouldParsePackagesFromInput() {
+        String input = "P1 50 30 OFR001\n" +
+                "P2 75 125 OFR008\n" +
+                "P3 175 100";
+        List<Package> packages = packageService.parsePackages(input);
+
+        var expected = new ArrayList<>() {{
+            add(new Package("P1", 50, 30, "OFR001"));
+            add(new Package("P2", 75, 125, "OFR008"));
+            add(new Package("P3", 175, 100));
+        }};
+
+        assertEquals(expected, packages);
     }
 }

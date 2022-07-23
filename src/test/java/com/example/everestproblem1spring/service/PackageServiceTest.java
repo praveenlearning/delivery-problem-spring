@@ -1,13 +1,24 @@
 package com.example.everestproblem1spring.service;
 
 import com.example.everestproblem1spring.model.Package;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PackageServiceTest {
 
-    private final PackageService packageService = new PackageService();
+    private OfferService offerService;
+    private PackageService packageService;
+
+    @BeforeAll
+    void setUp() {
+        offerService = mock(OfferService.class);
+        packageService = new PackageService(offerService);
+    }
 
     @Test
     void shouldParsePackageFromString() {
@@ -30,5 +41,25 @@ class PackageServiceTest {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> packageService.parsePackage("PKG1 50"));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> packageService.parsePackage(""));
         assertThrows(NumberFormatException.class, () -> packageService.parsePackage("PKG1 50 CB"));
+    }
+
+    @Test
+    void shouldCalculateCostForPackageDelivery() {
+        Package pkg = mock(Package.class);
+        when(pkg.getWeight()).thenReturn(45);
+        when(pkg.getDistance()).thenReturn(15);
+
+        int expectedCost = 525;
+        int cost = packageService.costFor(pkg);
+
+        assertEquals(expectedCost, cost);
+    }
+
+    @Test
+    void shouldCalculateDiscountForPackageDelivery() {
+        Package pkg = mock(Package.class);
+
+        packageService.discountFor(pkg);
+        verify(offerService, only()).applyOffer(pkg);
     }
 }

@@ -14,6 +14,8 @@ public class OfferService {
 
     public Offer get(String offerCode) {
         Offer offer = Offer.NONE;
+        if (offerCode == null)
+            return offer;
         try {
             offer = Enum.valueOf(Offer.class, offerCode);
         } catch (IllegalArgumentException ignored) {

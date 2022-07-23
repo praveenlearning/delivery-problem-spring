@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ class PackageServiceTest {
     @Test
     void shouldParsePackageFromStringWithoutOfferCode() {
         Package aPackage = packageService.parsePackage("PKG1 50 30");
-        Package expected = new Package("PKG1", 50, 30);
+        Package expected = new Package("PKG1", 50, 30, null);
 
         assertEquals(expected, aPackage);
     }
@@ -88,7 +87,7 @@ class PackageServiceTest {
         var expected = new ArrayList<>() {{
             add(new Package("P1", 50, 30, "OFR001"));
             add(new Package("P2", 75, 125, "OFR008"));
-            add(new Package("P3", 175, 100));
+            add(new Package("P3", 175, 100, null));
         }};
 
         assertEquals(expected, packages);

@@ -1,8 +1,10 @@
 package com.example.everestproblem1spring.service;
 
 import com.example.everestproblem1spring.model.Package;
+import com.example.everestproblem1spring.model.PackageCostReport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -12,6 +14,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PackageService {
+
+    @Value("${app.baseCost}")
+    int baseCost;
 
     @Autowired
     private final OfferService offerService;
@@ -29,18 +34,19 @@ public class PackageService {
     }
 
     public int costFor(Package pkg) {
-        return pkg.getWeight() * 10 + pkg.getDistance() * 5;
+        return baseCost + pkg.getWeight() * 10 + pkg.getDistance() * 5;
     }
 
     public int discountFor(Package pkg) {
-        return offerService.applyOffer(pkg);
+        int totalCost = costFor(pkg);
+        return totalCost * offerService.applyOffer(pkg) / 100;
     }
 
     public int totalCost(Package pkg) {
         int totalCost = costFor(pkg);
         int discount = discountFor(pkg);
 
-        return totalCost - (totalCost * discount / 100);
+        return totalCost - discount;
     }
 
     public List<Package> parsePackages(String packagesInput) {
@@ -49,5 +55,13 @@ public class PackageService {
         return Arrays.stream(packagesInputArray)
                 .map(this::parsePackage)
                 .collect(Collectors.toList());
+    }
+
+    public List<PackageCostReport> costReport(List<Package> packages) {
+        return packages.stream().map(pkg -> {
+            int discount = discountFor(pkg);
+            int totalCost = totalCost(pkg);
+            return new PackageCostReport(pkg.getPackageId(), discount, totalCost);
+        }).collect(Collectors.toList());
     }
 }

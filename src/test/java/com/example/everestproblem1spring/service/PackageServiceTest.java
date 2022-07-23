@@ -62,4 +62,15 @@ class PackageServiceTest {
         packageService.discountFor(pkg);
         verify(offerService, only()).applyOffer(pkg);
     }
+
+    @Test
+    void shouldCalculateTotalCost() {
+        Package pkg = mock(Package.class);
+        when(pkg.getWeight()).thenReturn(60);
+        when(pkg.getDistance()).thenReturn(100);
+        when(offerService.applyOffer(pkg)).thenReturn(10);
+
+        int totalCost = packageService.totalCost(pkg);
+        assertEquals(990, totalCost);
+    }
 }

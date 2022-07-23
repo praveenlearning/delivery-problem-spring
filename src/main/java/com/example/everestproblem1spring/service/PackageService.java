@@ -31,4 +31,11 @@ public class PackageService {
     public int discountFor(Package pkg) {
         return offerService.applyOffer(pkg);
     }
+
+    public int totalCost(Package pkg) {
+        int totalCost = costFor(pkg);
+        int discount = discountFor(pkg);
+
+        return totalCost - (totalCost * discount / 100);
+    }
 }

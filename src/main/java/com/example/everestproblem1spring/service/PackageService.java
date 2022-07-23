@@ -1,13 +1,12 @@
 package com.example.everestproblem1spring.service;
 
 import com.example.everestproblem1spring.model.Package;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PackageService {
 
-    public Package parsePackage(@NotNull String input) {
+    public Package parsePackage(String input) {
         String[] packageInput = input.split(" ");
         String packageId = packageInput[0];
         int weight = Integer.parseInt(packageInput[1]);

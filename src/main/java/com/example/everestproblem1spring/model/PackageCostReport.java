@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class PackageCostReport {
-    private final String packageId;
+    private final Package aPackage;
     private final int discount;
     private final int cost;
 }

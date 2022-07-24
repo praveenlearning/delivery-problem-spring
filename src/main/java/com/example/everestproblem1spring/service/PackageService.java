@@ -3,7 +3,6 @@ package com.example.everestproblem1spring.service;
 import com.example.everestproblem1spring.model.Package;
 import com.example.everestproblem1spring.model.PackageCostReport;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class PackageService {
     @Value("${app.baseCost}")
     int baseCost;
 
-    @Autowired
     private final OfferService offerService;
 
     public Package parsePackage(String input) {
@@ -61,7 +59,7 @@ public class PackageService {
         return packages.stream().map(pkg -> {
             int discount = discountFor(pkg);
             int totalCost = totalCost(pkg);
-            return new PackageCostReport(pkg.getPackageId(), discount, totalCost);
+            return new PackageCostReport(pkg, discount, totalCost);
         }).collect(Collectors.toList());
     }
 }

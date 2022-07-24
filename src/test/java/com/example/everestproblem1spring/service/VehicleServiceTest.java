@@ -1,16 +1,29 @@
 package com.example.everestproblem1spring.service;
 
 import com.example.everestproblem1spring.model.Vehicle;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class VehicleServiceTest {
 
-    private final VehicleService vehicleService = new VehicleService();
+    private PackageService packageService;
+    private DeliveryService deliveryService;
+    private VehicleService vehicleService;
+
+    @BeforeAll
+    void setUp() {
+        packageService = mock(PackageService.class);
+        deliveryService = mock(DeliveryService.class);
+        vehicleService = new VehicleService(deliveryService, packageService);
+    }
 
     @Test
     void parseVehicles() {

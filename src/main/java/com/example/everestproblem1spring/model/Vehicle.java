@@ -6,4 +6,6 @@ import lombok.Data;
 public class Vehicle {
     final int maxSpeed;
     final int maxCapacity;
+    private boolean isAvailable = true;
+    private double availableIn = 0;
 }

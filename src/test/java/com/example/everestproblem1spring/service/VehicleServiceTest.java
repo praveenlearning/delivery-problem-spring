@@ -29,4 +29,15 @@ class VehicleServiceTest {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> vehicleService.parseVehicles("2"));
         assertThrows(NumberFormatException.class, () -> vehicleService.parseVehicles("T"));
     }
+
+    @Test
+    void addVehicles() {
+        List<Vehicle> vehicles = vehicleService.parseVehicles("2 70 200");
+        vehicleService.addVehicles(vehicles);
+
+        List<Vehicle> vehiclesAfter = vehicleService.getVehicles();
+
+        assertEquals(vehicles, vehiclesAfter);
+        assertTrue(vehiclesAfter.containsAll(vehicles));
+    }
 }
